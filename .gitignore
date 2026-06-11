@@ -12,3 +12,5 @@ logs*/
 .aim/
 *.bkp
 .vscode/
+# Local isolated eval venv (Point Motion EVAL PREP)
+.venv_rg/

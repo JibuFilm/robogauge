@@ -76,3 +76,7 @@ class SimData:
     proprio: RobotProprioception
     dynamics: DynamicsState
     visual: VisualState
+    # raw MuJoCo handles — escape hatch for robots that need to raycast the live scene (the A2 V5
+    # perceptive student's 512-ray A3 dome). Optional; curated-only robots ignore them.
+    mj_model: object = None
+    mj_data: object = None

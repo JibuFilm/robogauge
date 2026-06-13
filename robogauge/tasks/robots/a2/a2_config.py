@@ -104,6 +104,22 @@ class A2LabTerrainConfig(A2LabConfig, A2TerrainConfig):
     """A2 lab config for terrain tasks."""
 
 
+class A2V5Config(A2LabConfig):
+    """A2 V5 perceptive student (the A3 sensorium): 45 proprio + 512 A3 dome ranges = 557 obs.
+    Lab cmd scale [1,1,1] (patha lineage); robot_class A2V5 appends the dome ranges; the jit is
+    the 557->12 MoE student (single-frame in, internal 5-frame history). The default model is the
+    seg-1 export — submits from the training run override it server-side."""
+    robot_class = "A2V5"
+
+    class control(A2LabConfig.control):
+        num_observations = 557
+        model_path = "{ROBOGAUGE_ROOT_DIR}/resources/models/a2/a2_v5.pt"
+
+
+class A2V5TerrainConfig(A2V5Config, A2TerrainConfig):
+    """A2 V5 config for terrain tasks (wave/stairs/slope/obstacle)."""
+
+
 # ---------------------------------------------------------------------------------------------
 # Parity selftest (G-E4) — re-derive from robot_config.py and assert the committed JSON matches.
 # ---------------------------------------------------------------------------------------------

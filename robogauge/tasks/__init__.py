@@ -12,6 +12,8 @@ from robogauge.tasks.robots import (
     A2LabConfig,
     A2TerrainConfig,
     A2LabTerrainConfig,
+    A2V5Config,
+    A2V5TerrainConfig,
 )
 from robogauge.tasks.pipeline import BasePipeline
 from robogauge.tasks.gauge import BaseGaugeConfig
@@ -59,6 +61,17 @@ task_register.register('a2_lab.wave', BasePipeline, MujocoConfig, A2WaveGaugeCon
 task_register.register('a2_lab.stairs_fd', BasePipeline, MujocoConfig, A2StairsForwardGaugeConfig, A2LabTerrainConfig)
 task_register.register('a2_lab.stairs_bd', BasePipeline, MujocoConfig, A2StairsBackwardGaugeConfig, A2LabTerrainConfig)
 task_register.register('a2_lab.obstacle', BasePipeline, MujocoConfig, A2ObstacleGaugeConfig, A2LabTerrainConfig)
+
+# A2 V5 (the perceptive student: 45 proprio + 512 A3 dome ranges = 557 obs). Same sensorized body
+# + lab cmd scale as a2_lab; the A2V5 robot_class appends the dome ranges so the 557-dim V5 jit no
+# longer errors server-side. Dome parity-gated vs a2_moe_driver (parity_a3_ranges.py).
+task_register.register('a2_v5.flat', BasePipeline, MujocoConfig, A2FlatGaugeConfig, A2V5Config)
+task_register.register('a2_v5.slope_fd', BasePipeline, MujocoConfig, A2SlopeForwardGaugeConfig, A2V5TerrainConfig)
+task_register.register('a2_v5.slope_bd', BasePipeline, MujocoConfig, A2SlopeBackwardGaugeConfig, A2V5TerrainConfig)
+task_register.register('a2_v5.wave', BasePipeline, MujocoConfig, A2WaveGaugeConfig, A2V5TerrainConfig)
+task_register.register('a2_v5.stairs_fd', BasePipeline, MujocoConfig, A2StairsForwardGaugeConfig, A2V5TerrainConfig)
+task_register.register('a2_v5.stairs_bd', BasePipeline, MujocoConfig, A2StairsBackwardGaugeConfig, A2V5TerrainConfig)
+task_register.register('a2_v5.obstacle', BasePipeline, MujocoConfig, A2ObstacleGaugeConfig, A2V5TerrainConfig)
 
 # A2 (go2-style scaled cmd obs — A/B baseline).
 task_register.register('a2.flat', BasePipeline, MujocoConfig, A2FlatGaugeConfig, A2Config)

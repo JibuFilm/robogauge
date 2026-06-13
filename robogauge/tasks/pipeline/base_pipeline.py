@@ -18,7 +18,7 @@ from robogauge.utils.logger import logger
 from robogauge.tasks.simulator import MujocoSimulator, MujocoConfig, SimData
 from robogauge.tasks.robots import (
     BaseRobot, RobotConfig, Go2Config, Go2, Go2MoEConfig, Go2MoE,
-    A2Config, A2, A2MoE,  # robot_class is eval()'d here, so A2 classes must be in scope
+    A2Config, A2, A2MoE, A2V5,  # robot_class is eval()'d here, so A2 classes must be in scope
 )
 from robogauge.tasks.gauge import BaseGauge, BaseGaugeConfig
 from robogauge.tasks.gauge.goal_data import GoalData, VelocityGoal, PositionGoal

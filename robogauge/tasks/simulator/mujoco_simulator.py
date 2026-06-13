@@ -292,6 +292,8 @@ class MujocoSimulator:
             proprio=proprio,
             dynamics=dynamics,
             visual=visual,
+            mj_model=self.mj_model,
+            mj_data=self.mj_data,
         )
 
         # input("DEBUG")

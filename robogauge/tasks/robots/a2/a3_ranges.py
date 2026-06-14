@@ -56,7 +56,22 @@ class A3Ranges:
         self.dirs_sensor = sensor_frame_directions_np(self.contract)        # (256, 3)
         self.n_per = self.dirs_sensor.shape[0]
         self.n_total = int(self.contract["total_rays"])                     # 512
-        self.site_ids = [mj_model.site(s["site"]).id for s in self.contract["sensors"]]
+        self.site_ids = [self._resolve_site_id(mj_model, s["site"]) for s in self.contract["sensors"]]
+
+    @staticmethod
+    def _resolve_site_id(mj_model, name: str) -> int:
+        """Resolve a contract site name to its id. The training MJCF uses the BARE name
+        (`a2_front_lidar_frame`); robogauge/dm_control NAMESPACES it as `<model>/<name>`
+        (`a2/a2_front_lidar_frame`). Try exact, then a `/`-suffix match. (The parity gate ran on the
+        bare-name model, so this prefix mismatch only surfaced at eval runtime — 2026-06-14.)"""
+        try:
+            return mj_model.site(name).id
+        except KeyError:
+            for i in range(mj_model.nsite):
+                nm = mj_model.site(i).name
+                if nm == name or nm.endswith("/" + name):
+                    return i
+            raise KeyError(f"site '{name}' not found among {mj_model.nsite} sites")
 
     def raw_ranges(self, mj_model, mj_data) -> np.ndarray:
         """(512,) ray distances in meters; np.inf = no hit. Physical geoms only (visual groups
